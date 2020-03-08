@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Adding car</title>
+</head>
+<body>
+
+    <h1>Adding car</h1>
+
+    <form th:action="@{/cars/add/result}"
+          th:method="post"
+          th:object="${car}">
+
+        <div>
+            Id: <input type="text" th:field="*{id}" th:value="*{id}"><br />
+            Make: <input type="text" th:field="*{make}" th:value="*{make}"><br />
+            Model: <input type="text" th:field="*{model}" th:value="*{model}"><br />
+            Color: <input type="text" th:field="*{color}" th:value="*{color}"><br />
+        </div>
+        <div>
+            <input type="submit" th:value="Add"><br />
+        </div>
+
+
+    </form>
+
+    <div th:if="${car.make}">
+        <span th:text="'The new car has been succesfully added!'"></span>
+    </div>
+
+</body>
+</html>

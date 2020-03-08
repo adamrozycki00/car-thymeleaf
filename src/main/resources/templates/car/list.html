@@ -10,9 +10,10 @@
 
     <h1>List of cars</h1>
 
-    <ul th:each="c : ${cars}">
-        <li th:text="${c.id} + ') ' + ${c.make} + ' ' + ${c.model} + ', ' + ${c.color}"></li>
-    </ul>
+    <div th:each="c : ${cars}">
+        <div th:text="${c.id} + ') ' + ${c.make} + ' ' + ${c.model} + ', ' + ${c.color}"></div>
+        <br />
+    </div>
 
 </body>
 </html>

@@ -2,9 +2,7 @@ package pl.adaroz.springboot2.homework4.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import pl.adaroz.springboot2.homework4.model.Car;
 
 import java.util.ArrayList;
@@ -47,14 +45,18 @@ public class CarController {
 //        return new ResponseEntity(HttpStatus.NOT_FOUND);
 //    }
 //
-//    @PostMapping
-//    public ResponseEntity addCar(@RequestBody Car car) {
-//        boolean added = listOfCars.add(car);
-//        if (added)
-//            return new ResponseEntity(HttpStatus.CREATED);
-//        else
-//            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
-//    }
+
+    @GetMapping("/add")
+    public String addCar(Model model) {
+        model.addAttribute("car", new Car());
+        return "/car/add";
+    }
+
+    @PostMapping("/add/result")
+    public String addCar(@ModelAttribute Car car) {
+        listOfCars.add(car);
+        return "/car/add";
+    }
 //
 //    @PutMapping
 //    public ResponseEntity modCar(@RequestBody Car newCar) {

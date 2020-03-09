@@ -32,19 +32,9 @@ public class CarController {
     public String getCarById(@PathVariable long id,
                              Model model) {
         Optional<Car> carOptional = listOfCars.stream().filter(c -> c.getId() == id).findFirst();
-        //Car car = carOptional.isPresent() ? car
         model.addAttribute("car", carOptional.get());
         return "/car/selected";
     }
-
-//    @GetMapping("/color/{color}")
-//    public ResponseEntity<List<Car>> getCarsByColor(@PathVariable String color) {
-//        List<Car> carsOfColor = listOfCars.stream().filter(car -> car.getColor().equals(color)).collect(Collectors.toList());
-//        if (!carsOfColor.isEmpty())
-//            return new ResponseEntity<>(carsOfColor, HttpStatus.OK);
-//        return new ResponseEntity(HttpStatus.NOT_FOUND);
-//    }
-//
 
     @GetMapping("/add")
     public String addCar(Model model) {
@@ -57,18 +47,24 @@ public class CarController {
         listOfCars.add(car);
         return "/car/add";
     }
-//
-//    @PutMapping
-//    public ResponseEntity modCar(@RequestBody Car newCar) {
-//        Optional<Car> optCar = listOfCars.stream().filter(car -> car.getId() == newCar.getId()).findFirst();
-//        if (optCar.isPresent()) {
-//            listOfCars.remove(optCar.get());
-//            listOfCars.add(newCar);
-//            return new ResponseEntity(HttpStatus.OK);
-//        }
-//        return new ResponseEntity(HttpStatus.NOT_FOUND);
-//    }
-//
+
+    @GetMapping("/mod/{id}")
+    public String modCar(@PathVariable long id,
+                         Model model) {
+        Optional<Car> carOptional = listOfCars.stream().filter(c -> c.getId() == id).findFirst();
+        model.addAttribute("car", carOptional.get());
+        return "/car/mod";
+    }
+
+    @PostMapping("/mod/result")
+    public String modCar(@ModelAttribute Car car) {
+        long id = car.getId();
+        Optional<Car> carOptional = listOfCars.stream().filter(c -> c.getId() == id).findFirst();
+        listOfCars.remove(carOptional.get());
+        listOfCars.add(car);
+        return "redirect:/cars";
+    }
+
 //    @PatchMapping
 //    public ResponseEntity modColor(@RequestHeader long id,
 //                                   @RequestHeader("color") String newColor) {

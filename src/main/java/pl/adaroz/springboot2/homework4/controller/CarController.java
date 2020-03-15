@@ -38,7 +38,13 @@ public class CarController {
 
     @GetMapping("/add")
     public String addCar(Model model) {
-        model.addAttribute("car", new Car());
+        long nextId = 0;
+        for (Car car : listOfCars)
+            if (car.getId() >= nextId)
+                nextId = car.getId() + 1;
+        Car newCar = new Car();
+        newCar.setId(nextId);
+        model.addAttribute("car", newCar);
         return "/car/add";
     }
 
@@ -60,30 +66,28 @@ public class CarController {
     public String modCar(@ModelAttribute Car car) {
         long id = car.getId();
         Optional<Car> carOptional = listOfCars.stream().filter(c -> c.getId() == id).findFirst();
-        listOfCars.remove(carOptional.get());
-        listOfCars.add(car);
+        Car oldCar = carOptional.get();
+        oldCar.setMake(car.getMake());
+        oldCar.setModel(car.getModel());
+        oldCar.setColor(car.getColor());
         return "redirect:/cars";
     }
 
-//    @PatchMapping
-//    public ResponseEntity modColor(@RequestHeader long id,
-//                                   @RequestHeader("color") String newColor) {
-//        Optional<Car> optCar = listOfCars.stream().filter(car -> car.getId() == id).findFirst();
-//        if (optCar.isPresent()) {
-//            optCar.get().setColor(newColor);
-//            return new ResponseEntity(HttpStatus.ACCEPTED);
-//        }
-//        return new ResponseEntity(HttpStatus.NOT_FOUND);
-//    }
-//
-//    @DeleteMapping("/id/{id}")
-//    public ResponseEntity<Car> removeCar(@PathVariable long id) {
-//        Optional<Car> optCar = listOfCars.stream().filter(car -> car.getId() == id).findFirst();
-//        if (optCar.isPresent()) {
-//            listOfCars.remove(optCar.get());
-//            return new ResponseEntity<>(optCar.get(), HttpStatus.OK);
-//        }
-//        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//    }
+    @PatchMapping("/color")
+    public String modColor(@RequestHeader long id,
+                           @RequestHeader("color") String newColor) {
+        Optional<Car> optCar = listOfCars.stream().filter(car -> car.getId() == id).findFirst();
+        if (optCar.isPresent())
+            optCar.get().setColor(newColor);
+        return "redirect:/cars";
+    }
+
+    @DeleteMapping("/id/{id}")
+    public String removeCar(@PathVariable long id) {
+        Optional<Car> optCar = listOfCars.stream().filter(car -> car.getId() == id).findFirst();
+        if (optCar.isPresent())
+            listOfCars.remove(optCar.get());
+        return "redirect:/cars";
+    }
 
 }

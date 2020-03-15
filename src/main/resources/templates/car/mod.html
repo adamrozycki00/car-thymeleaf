@@ -14,13 +14,15 @@
           th:object="${car}">
 
         <div>
-            Id: <input type="text" th:field="*{id}" th:value="*{id}"><br />
             Make: <input type="text" th:field="*{make}" th:value="*{make}"><br />
             Model: <input type="text" th:field="*{model}" th:value="*{model}"><br />
             Color: <input type="text" th:field="*{color}" th:value="*{color}"><br />
         </div>
         <div>
             <input type="submit" th:value="Save"><br />
+        </div>
+        <div>
+            <input type="hidden" th:field="*{id}" th:value="*{id}">
         </div>
 
     </form>
